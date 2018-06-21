@@ -32,11 +32,6 @@ struct Vec;
 void imageOutput(Vec **pix, int spp);
 void processImage(Vec **pix, int spp);
 }
-namespace smallpaint_vrl {
-struct Vec;
-void imageOutput(Vec **pix, int spp, int vrls);
-void processImage(Vec **pix, int spp, int vrls);
-}
 namespace smallpaint {
 bool isRunning(int id);
 void sendToRender(int size, int spp, float refr, std::string renderer);

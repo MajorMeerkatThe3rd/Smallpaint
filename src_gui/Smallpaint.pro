@@ -22,14 +22,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Smallpaint
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++0x
-QMAKE_CXXFLAGS+= -fopenmp
+QMAKE_CXXFLAGS += -openmp
 
-QMAKE_CXXFLAGS_RELEASE += -O3
-
-QMAKE_LFLAGS +=  -fopenmp
-
-LIBS += -fopenmp
+LIBS += -openmp
 
 SOURCES += main.cpp \
     mainwindow.cpp \
@@ -43,7 +38,7 @@ SOURCES += main.cpp \
     testwindow.cpp \
     helperfunctions.cpp \
     ../smallpaint_ppm/smallpaint_ppm.cpp \
-    ../smallpaint_vrl/smallpaint_vrl.cpp
+    image.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -57,7 +52,8 @@ HEADERS  += \
     scenegeometries.h \
     sceneGeometries.h \
     testwindow.h \
-    helperfunctions.h
+    helperfunctions.h \
+    image.h
 
 FORMS    += \
     mainwindow.ui \

@@ -8,12 +8,12 @@ namespace smallpaint_smallmedia {
 using namespace std;
 
 // Surface render settings
-//#define SURFACES			// render surfaces (if deactivated renders a single point light in the center of the scene and without the cornell box etc.)
-//#define CORNELLBOX			// render cornellbox (only if surfaces are enabled. if enabled renders a cornelbox for the scene)
+#define SURFACES			// render surfaces (if deactivated renders a single point light in the center of the scene and without the cornell box etc.)
+#define CORNELLBOX			// render cornellbox (only if surfaces are enabled. if enabled renders a cornelbox for the scene)
 // Media render settings
-//#define MULTIPLE_SCATTERING	// use multiple scattering
-//#define RM					// if enabled uses ray marching for heterogeneous media, if disabled uses delta tracking
-#define HOM					// if enabled ignores RM command and computes exponential homogeneous transmittances
+#define MULTIPLE_SCATTERING	// use multiple scattering
+#define RM					// if enabled uses ray marching for heterogeneous media, if disabled uses delta tracking
+//#define HOM					// if enabled ignores RM command and computes exponential homogeneous transmittances
 
 
 // Random Number Generation

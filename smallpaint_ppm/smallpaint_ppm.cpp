@@ -138,61 +138,6 @@ public:
 	}
 };
 
-class AABox : public Obj {
-    public:
-    Vec min, max;
-    AABox(Vec min_ = 0, Vec max_ = 0) {
-        min = min_;
-        max = max_;
-    }
-
-    //intersection routine from https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
-    double intersect(const Ray& ray) const {
-        float tmin = (min.x - ray.o.x) / ray.d.x;
-        float tmax = (max.x - ray.o.x) / ray.d.x;
-
-        if (tmin > tmax) swap(tmin, tmax);
-
-        float tymin = (min.y - ray.o.y) / ray.d.y;
-        float tymax = (max.y - ray.o.y) / ray.d.y;
-
-        if (tymin > tymax) swap(tymin, tymax);
-
-        if ((tmin > tymax) || (tymin > tmax))
-            return 0;
-
-        if (tymin > tmin)
-            tmin = tymin;
-
-        if (tymax < tmax)
-            tmax = tymax;
-
-        float tzmin = (min.z - ray.o.z) / ray.d.z;
-        float tzmax = (max.z - ray.o.z) / ray.d.z;
-
-        if (tzmin > tzmax) swap(tzmin, tzmax);
-
-        if ((tmin > tzmax) || (tzmin > tmax))
-            return 0;
-
-        if (tzmin > tmin)
-            tmin = tzmin;
-
-        if (tzmax < tmax)
-            tmax = tzmax;
-
-        return tmin;
-    }
-    Vec normal(const Vec& p0) const {
-        if (p0.x >= min.x - eps && p0.x <= min.x + eps) return Vec(-1, 0 ,0);
-        if (p0.x >= max.x - eps && p0.x <= max.x + eps) return Vec(1, 0, 0);
-        if (p0.y >= min.y - eps && p0.y <= min.y + eps) return Vec(0, -1, 0);
-        if (p0.y >= max.y - eps && p0.y <= max.y + eps) return Vec(0, 1, 0);
-        if (p0.z >= min.z - eps && p0.z <= min.z + eps) return Vec(0, 0, -1);
-        if (p0.z >= max.z - eps && p0.z <= max.z + eps) return Vec(0, 0, 1);
-    }
-};
-
 class Intersection {
 public:
 	Intersection() { t = inf; object = nullptr; }
@@ -522,7 +467,6 @@ void render(int id, int size, int photons, double refr_index) {
     add(new Plane(2.75, Vec(-1, 0, 0)), Vec(.01, .5, .01), 0, 1); // Right plane
     add(new Plane(3.0, Vec(0, -1, 0)), Vec(.1, .1, .1), 0, 1); // Ceiling plane
     add(new Plane(0.5, Vec(0, 0, -1)), Vec(.1, .1, .1), 0, 1); // Front plane
-    add(new AABox(Vec(-1, -2, -4.65), Vec(1, -1, -3)), Vec(0, .6, 0), 0, 1);
 
 	Obj* light = new Sphere(0.5, Vec(0, 1.9, -3));
     light->setMat(Vec(1, 1, 1), 50, 1);
@@ -560,7 +504,7 @@ void render(int id, int size, int photons, double refr_index) {
 
 	int updateF = 150;
 	if (size >= 500) updateF = 50;
-    if (size >= 1000) updateF = 25;
+	if (size >= 1000) updateF = 25;
 
     for (int i = 1; i <= photons / 1000; i++) {
 	#pragma omp parallel for schedule(dynamic)

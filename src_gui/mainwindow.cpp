@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow) {
 	ui->setupUi(this);
+    connect(ui->image, SIGNAL(saveImage()),
+            this, SLOT(saveImage()));
+
 	connect(this, SIGNAL(smallpaint_fixedSignal(smallpaint_fixed::Vec**, int)),
 			this, SLOT(smallpaint_fixedSlot(smallpaint_fixed::Vec**, int)));
 	connect(this, SIGNAL(smallpaint_painterlySignal(smallpaint_painterly::Vec**, int)),
@@ -20,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
 			this, SLOT(smallpaint_smallmediaSlot(smallpaint_smallmedia::Vec**, int)));
 	connect(this, SIGNAL(smallpaint_ppmSignal(smallpaint_ppm::Vec**, int)),
 			this, SLOT(smallpaint_ppmSlot(smallpaint_ppm::Vec**, int)));
-    connect(this, SIGNAL(smallpaint_vrlSignal(smallpaint_vrl::Vec**, int, int)),
-            this, SLOT(smallpaint_vrlSlot(smallpaint_vrl::Vec**, int, int)));
 	helper.setDefaults();
 }
 
@@ -52,30 +53,12 @@ void MainWindow::closeEvent(QCloseEvent *event) {
  */
 void MainWindow::resizeEvent(QResizeEvent *event) {
     if (lastImage == "" && image.isNull()) return;
-	float width = event->size().width() - ui->menu->minimumWidth() - 30;
-	float height = event->size().height() - ui->bottom->minimumHeight() - 30;
-	float value = std::min(width, height);
-	if (image.size().width() != 0) ui->renderedImage->setPixmap(QPixmap::fromImage(image.scaled(value, value)));
-	ui->renderedImage->hide();
-	ui->renderedImage->show();
-	ui->renderedImage->resize(value, value);
-	ui->renderedImage->move((int)((event->size().width() + (10 + ui->menu->minimumWidth()) - value) / 2),
-		(int)((event->size().height() - (10 + ui->bottom->minimumHeight()) - value) / 2));
+    ui->image->resizeImage(image);
 }
 
-/**
- * Opens QFileDialog if right click on image.
- */
-void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
-	if (isRendering()) return;
-	if (event->button() == Qt::RightButton) {
-		if (event->pos().x() >= ui->renderedImage->pos().x() &&
-			event->pos().x() <= (ui->renderedImage->pos().x() + ui->renderedImage->size().width()) &&
-			event->pos().y() >= ui->renderedImage->pos().y() &&
-			event->pos().y() <= (ui->renderedImage->pos().y() + ui->renderedImage->size().height())) {
-			helper.saveImage();
-		}
-	}
+void MainWindow::saveImage(){
+    if (isRendering()) return;
+    helper.saveImage();
 }
 
 /**
@@ -101,13 +84,15 @@ void MainWindow::on_renderModesComboBox_currentTextChanged(const QString &arg1) 
 void MainWindow::drawImage(QImage img, std::string name, int currentSpp, int goalSpp) {
     image = img.copy();
     if (name == "logo"){
-        ui->renderedImage->setPixmap(QPixmap::fromImage(image));
+        ui->image->setImage(image);
+        //ui->renderedImage->setPixmap(QPixmap::fromImage(image));
         resizeImage();
     } else {
         if (!testing) {
             lastImage = name;
             helper.updateInfo(currentSpp, goalSpp);
-            ui->renderedImage->setPixmap(QPixmap::fromImage(image));
+            ui->image->setImage(image);
+            //ui->renderedImage->setPixmap(QPixmap::fromImage(image));
             resizeImage();
         } else {
             helper.updateInfo(currentSpp, goalSpp);
@@ -258,8 +243,4 @@ void MainWindow::smallpaint_smallmediaSlot(smallpaint_smallmedia::Vec **pix, int
 
 void MainWindow::smallpaint_ppmSlot(smallpaint_ppm::Vec **pix, int spp) {
 	smallpaint_ppm::processImage(pix, spp);
-}
-
-void MainWindow::smallpaint_vrlSlot(smallpaint_vrl::Vec **pix, int spp, int vrls) {
-    smallpaint_vrl::processImage(pix, spp, vrls);
 }

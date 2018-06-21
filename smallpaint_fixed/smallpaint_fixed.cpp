@@ -107,60 +107,6 @@ public:
 	Vec normal(const Vec& p0) const { return n; }
 };
 
-class AABox : public Obj {
-    public:
-    Vec min, max;
-    AABox(Vec min_ = 0, Vec max_ = 0) {
-        min = min_;
-        max = max_;
-    }
-
-    //intersection routine from https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
-    double intersect(const Ray& ray) const {
-        float tmin = (min.x - ray.o.x) / ray.d.x;
-        float tmax = (max.x - ray.o.x) / ray.d.x;
-
-        if (tmin > tmax) swap(tmin, tmax);
-
-        float tymin = (min.y - ray.o.y) / ray.d.y;
-        float tymax = (max.y - ray.o.y) / ray.d.y;
-
-        if (tymin > tymax) swap(tymin, tymax);
-
-        if ((tmin > tymax) || (tymin > tmax))
-            return 0;
-
-        if (tymin > tmin)
-            tmin = tymin;
-
-        if (tymax < tmax)
-            tmax = tymax;
-
-        float tzmin = (min.z - ray.o.z) / ray.d.z;
-        float tzmax = (max.z - ray.o.z) / ray.d.z;
-
-        if (tzmin > tzmax) swap(tzmin, tzmax);
-
-        if ((tmin > tzmax) || (tzmin > tmax))
-            return 0;
-
-        if (tzmin > tmin)
-            tmin = tzmin;
-
-        if (tzmax < tmax)
-            tmax = tzmax;
-
-        return tmin;
-    }
-    Vec normal(const Vec& p0) const {
-        if (p0.x == min.x) return Vec(-1, 0 ,0);
-        if (p0.x == max.x) return Vec(1, 0, 0);
-        if (p0.y == min.y) return Vec(0, -1, 0);
-        if (p0.y == max.y) return Vec(0, 1, 0);
-        if (p0.z == min.z) return Vec(0, 0, -1);
-        if (p0.z == max.z) return Vec(0, 0, 1);
-    }
-};
 class Sphere : public Obj {
 public:
 	Vec c;
@@ -347,7 +293,7 @@ void render(int id, int size, int spp, double refr_index) {
 	};
 
 	// Radius, position, color, emission, type (1=diff, 2=spec, 3=refr) for spheres
-    //add(new Sphere(1.05, Vec(-0.75, -1.45, -4.4)), Vec(4, 8, 4), 0, 2); // Middle sphere
+	add(new Sphere(1.05, Vec(-0.75, -1.45, -4.4)), Vec(4, 8, 4), 0, 2); // Middle sphere
 	add(new Sphere(0.5, Vec(2.0, -2.05, -3.7)), Vec(10, 10, 1), 0, 3); // Right sphere
 	add(new Sphere(0.6, Vec(-1.75, -1.95, -3.1)), Vec(4, 4, 12), 0, 1); // Left sphere
 	// Position, normal, color, emission, type for planes
@@ -358,8 +304,6 @@ void render(int id, int size, int spp, double refr_index) {
 	add(new Plane(3.0, Vec(0, -1, 0)), Vec(6, 6, 6), 0, 1); // Ceiling plane
 	add(new Plane(0.5, Vec(0, 0, -1)), Vec(6, 6, 6), 0, 1); // Front plane
 	add(new Sphere(0.5, Vec(0, 1.9, -3)), Vec(0, 0, 0), 10000, 1); // Light
-
-    add(new AABox(Vec(-1, -2, -4.65), Vec(1, -1, -3)), Vec(0, 6, 0), 0, 1);
 
 	params["refr_index"] = refr_index;
 	params["spp"] = spp; // samples per pixel

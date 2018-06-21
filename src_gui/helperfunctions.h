@@ -26,7 +26,7 @@ private:
 		defaults(int spp, int minSpp, int size, int minSize, int maxSize, float refr, float minRefr, float maxRefr) : 
 		spp(spp), minSpp(minSpp), size(size), minSize(minSize), maxSize(maxSize), refr(refr), minRefr(minRefr), maxRefr(maxRefr) {};
 	};
-    defaults fixedDefaults, painterlyDefaults, bvhDefaults, pssmltDefaults, smallmediaDefaults, ppmDefaults, vrlDefaults;
+    defaults fixedDefaults, painterlyDefaults, bvhDefaults, pssmltDefaults, smallmediaDefaults, ppmDefaults;
 };
 
 #endif // HELPERFUNCTIONS_H

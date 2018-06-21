@@ -196,32 +196,6 @@ void processImage(smallpaint_ppm::Vec **pix, int s) {
 
 }
 
-namespace smallpaint_vrl {
-
-void imageOutput(smallpaint_vrl::Vec **pix, int s, int vrls) {
-    emit win->smallpaint_vrlSignal(pix, s, vrls);
-}
-
-void processImage(smallpaint_vrl::Vec **pix, int s, int vrls) {
-    s++;
-    std::string name = currentRenderer + "_" + to_string(vrls) + "_spp.ppm";
-
-    QImage image(win->width, win->height, QImage::Format_RGB32);
-
-    for (int row = 0; row < win->height; row++) {
-        for (int col = 0; col < win->width; col++) {
-            image.setPixel(col, row, qRgb(min((int)pix[col][row].x / s, 255), min((int)pix[col][row].y / s, 255), min((int)pix[col][row].z / s, 255)));
-        }
-    }
-    win->drawImage(image, name, vrls, spp);
-    if (spp <= vrls) {
-        rendering = false;
-        emit win->on_renderButton_clicked();
-    }
-}
-
-}
-
 namespace smallpaint {
 
 void sendToRender(int size, int s, float refr, std::string renderer) {
@@ -255,13 +229,6 @@ void sendToRender(int size, int s, float refr, std::string renderer) {
 			std::thread t(smallpaint_ppm::render, id, size, spp, refr);
 			t.detach();
 		}
-        if (renderer == "smallpaint_vrl") {
-            double sigma_a = .0001;
-            double sigma_s = .1;
-            double g = .5;
-            std::thread t(smallpaint_vrl::render, id, size, spp, refr, sigma_a, sigma_s, g);
-            t.detach();
-        }
 		id++;
 	}
 }

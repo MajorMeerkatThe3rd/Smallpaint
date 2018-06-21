@@ -46,9 +46,9 @@ Vec trace(Ray &ray, const Scene& scene, int depth, pl& params) {
 	// Compute scattering event position
 	double u = RND2;
 	double t_scatter, pdf; //scattering event position on ray and probability
-    sampleUniform(u, inf, t_scatter, pdf); // Uniform sampling
+	//sampleUniform(u, inf, t_scatter, pdf); // Uniform sampling
 	//sampleExponential(u, inf, scene.medium->sigma_t, t_scatter, pdf); // Exponential sampling
-    //sampleEquiAngular(u, inf, ray, scene.light->samplePos(), t_scatter, pdf); // Equiangular sampling
+	sampleEquiAngular(u, inf, ray, scene.light->samplePos(), t_scatter, pdf); // Equiangular sampling
 
 	Vec sp = ray.o + ray.d * t_scatter;
 
@@ -70,10 +70,10 @@ Vec trace(Ray &ray, const Scene& scene, int depth, pl& params) {
 			Ray l_ray(sp, L);
 
 			Intersection l_ints;
-        #ifdef SURFACES
-            // cast shadow ray
-            l_ints = scene.intersect(l_ray);
-        #endif
+		#ifdef SURFACES
+			// cast shadow ray
+			l_ints = scene.intersect(l_ray);
+		#endif
 			double l_t = l_ints.t; // Distance to nearest intersection in light direction
 
 
@@ -81,37 +81,37 @@ Vec trace(Ray &ray, const Scene& scene, int depth, pl& params) {
 			{
 				double geom = 1.0 / (d * d); // quadr. attenuation
 				//transmittance from scattering event to light
-            #ifdef RM
-                Vec transmit = scene.medium->transmittanceRM(l_ray, 0.0, d); // ray marching
-            #else
-                Vec transmit = scene.medium->transmittanceDelta(l_ray, 0, d, params["delta_samples"]); // delta tracking
-            #endif
-            #ifdef HOM
-                transmit = scene.medium->transmittanceHom(d); // exponential
-            #endif
+			#ifdef RM
+				Vec transmit = scene.medium->transmittanceRM(l_ray, 0.0, d); // ray marching
+			#else
+				Vec transmit = scene.medium->transmittanceDelta(l_ray, 0, d, params["delta_samples"]); // delta tracking
+			#endif
+			#ifdef HOM
+				transmit = scene.medium->transmittanceHom(d); // exponential
+			#endif
 				inscattering += scene.light->emission() * INV_4PI * geom * transmit; //Note: /4pi because explicit light sampling chooses the one direction towards the light source
 			}
 
 
 
-        #ifdef MULTIPLE_SCATTERING
-            // trace a scatter ray with random direction and add the color to inscattering term
-            Ray scatterRay(sp, sampleSphere(RND2, RND2));
-            inscattering += trace(scatterRay, scene, depth + 1, params);
-        #endif
+		#ifdef MULTIPLE_SCATTERING
+			// trace a scatter ray with random direction and add the color to inscattering term
+			Ray scatterRay(sp, sampleSphere(RND2, RND2));
+			inscattering += trace(scatterRay, scene, depth + 1, params);
+		#endif
 		}
 
 		Vec emission = scene.medium->emission(sp) * INV_4PI * t_scatter; //emission of the media from ray.o to scattering event
 
 		//transmittance from ray.o to the scattering event
-    #ifdef RM
-        Vec transmit = scene.medium->transmittanceRM(ray, 0.0, t_scatter); // ray marching
-    #else
-        Vec transmit = scene.medium->transmittanceDelta(ray, 0, t_scatter, params["delta_samples"]); // delta tracking
-    #endif
-    #ifdef HOM
-        transmit = scene.medium->transmittanceHom(t_scatter); // exponential
-    #endif
+	#ifdef RM
+		Vec transmit = scene.medium->transmittanceRM(ray, 0.0, t_scatter); // ray marching
+	#else
+		Vec transmit = scene.medium->transmittanceDelta(ray, 0, t_scatter, params["delta_samples"]); // delta tracking
+	#endif
+	#ifdef HOM
+		transmit = scene.medium->transmittanceHom(t_scatter); // exponential
+	#endif
 
 
 		clr += (sigma_s * inscattering + emission) * transmit / pdf; // radiative transfer equation
@@ -255,7 +255,7 @@ void render(int id, int sizeImage, int spp, double refr_index) {
 	// Density grid data
 	const unsigned int n = 25; //Minimum 2 // less than 50..
 	double densities[n*n*n];
-    int type = 4; //0..uniform random, 1..checkerboard, 2..gradient, 3..perlin, 4..constant
+	int type = 3; //0..uniform random, 1..checkerboard, 2..gradient, 3..perlin, 4..constant
 	Grid grid(n, densities);
 	fillGrid(type, grid);
 

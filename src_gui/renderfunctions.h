@@ -16,6 +16,3 @@ void render(int id, int size, int spp, double refr_index);
 namespace smallpaint_ppm {
 void render(int id, int size, int spp, double refr_index);
 }
-namespace smallpaint_vrl {
-void render(int id, int size, int spp, double refr_index, double sigma_a, double sigma_s, double g);
-}

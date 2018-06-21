@@ -20,7 +20,6 @@ void HelperFunctions::setDefaults() {
 	pssmltDefaults = defaults(10, 1, 400, 250, 2500, 1.5, 1., 5.);
 	smallmediaDefaults = defaults(20, 1, 400, 250, 2500, 1.5, 1., 5.);
 	ppmDefaults = defaults(1000, 1, 400, 250, 1500, 1.5, 1., 5.);
-    vrlDefaults = defaults(1000, 1, 400, 250, 2500, 1.5, 1., 5.);
 }
 
 /**
@@ -28,7 +27,7 @@ void HelperFunctions::setDefaults() {
  */
 void HelperFunctions::saveImage() {
     if (mainWindow->lastImage == "") return;
-    mainWindow->ui->renderedImage->clear();
+    //mainWindow->ui->renderedImage->clear();
     QString filename = QFileDialog::getSaveFileName(mainWindow, QObject::tr("Save Image"), QString::fromUtf8(mainWindow->lastImage.c_str()), QObject::tr("Image Files (*.ppm)"));
     if (filename == "") {
         mainWindow->ui->renderInfo->setText("Image not saved");
@@ -61,9 +60,6 @@ QString HelperFunctions::getRenderer(QString renderer) {
 	if (renderer == "Progressive Photon Mapping") {
 		return "ppm";
 	}
-    if (renderer == "Virtual Ray Lights") {
-        return "vrl";
-    }
 	if (renderer == "Tests") {
 		return "tests";
 	}
@@ -110,12 +106,6 @@ void HelperFunctions::changedComboBox(QString renderer) {
 		if (mainWindow->ui->ppmSamples->text() == "") mainWindow->ui->ppmSamples->setText(QString::number(ppmDefaults.spp));
 		if (mainWindow->ui->ppmRefraction->text() == "") mainWindow->ui->ppmRefraction->setText(QString::number(ppmDefaults.refr));
 	}
-    if (renderer == "vrl") {
-        mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->vrl);
-        if (mainWindow->ui->vrlSize->text() == "") mainWindow->ui->vrlSize->setText(QString::number(vrlDefaults.size));
-        if (mainWindow->ui->vrlSamples->text() == "") mainWindow->ui->vrlSamples->setText(QString::number(vrlDefaults.spp));
-        if (mainWindow->ui->vrlRefraction->text() == "") mainWindow->ui->vrlRefraction->setText(QString::number(vrlDefaults.refr));
-    }
 	if (renderer == "tests") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->tests);
 	}
@@ -265,24 +255,6 @@ void HelperFunctions::getInput(QString selectedRenderer, int &spp, int &size, fl
 		if (refr > ppmDefaults.maxRefr) refr = ppmDefaults.maxRefr;
 
 	}
-
-    if (selectedRenderer == "vrl") {
-
-        spp = getTextAsInt(mainWindow->ui->vrlSamples->text());
-        if (spp == -1) spp = vrlDefaults.spp;
-        if (spp < vrlDefaults.minSpp) spp = vrlDefaults.minSpp;
-
-        size = getTextAsInt(mainWindow->ui->vrlSize->text());
-        if (size == -1) size = vrlDefaults.size;
-        if (size < vrlDefaults.minSize) size = vrlDefaults.minSize;
-        if (size > vrlDefaults.maxSize) size = vrlDefaults.maxSize;
-
-        refr = getTextAsFloat(mainWindow->ui->vrlRefraction->text());
-        if (refr == -1) refr = vrlDefaults.refr;
-        if (refr < vrlDefaults.minRefr) refr = vrlDefaults.minRefr;
-        if (refr > vrlDefaults.maxRefr) refr = vrlDefaults.maxRefr;
-
-    }
 }
 
 /**
@@ -293,7 +265,7 @@ void HelperFunctions::initializeRenderInformation(QString selectedRenderer, int 
 	mainWindow->ui->renderButton->setText("Cancel");
 	mainWindow->width = size;
 	mainWindow->height = size;
-	mainWindow->ui->renderedImage->clear();
+    //mainWindow->ui->renderedImage->clear();
 	mainWindow->lastImage = "";
     mainWindow->ui->progressBar->setMinimum(0);
     mainWindow->ui->progressBar->setMaximum(spp);
@@ -334,7 +306,8 @@ QString HelperFunctions::processTime(int secondsToProcess) {
 void HelperFunctions::updateInfo(int currentSpp, int goalSpp) {
     mainWindow->ui->progressBar->setValue(currentSpp);
 
-    QString out = "Samples:\t" + QString::number(currentSpp) + " / " + QString::number(goalSpp) + "\n";
+    QString out = "Percentage:\t" + QString::number((float)currentSpp/(float)goalSpp * 100.0f, 'f', 2) + "%\n";
+    out += "Samples:\t" + QString::number(currentSpp) + " / " + QString::number(goalSpp) + "\n";
     int secondsElapsed = (clock() - mainWindow->start) / CLOCKS_PER_SEC;
     int secondsExpected = (goalSpp)*(secondsElapsed / (float)currentSpp);
     int secondsRemaining = secondsExpected - secondsElapsed;

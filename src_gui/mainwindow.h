@@ -38,10 +38,6 @@ namespace smallpaint_ppm {
 struct Vec;
 }
 
-namespace smallpaint_vrl {
-struct Vec;
-}
-
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
@@ -53,13 +49,13 @@ public:
 	~MainWindow();
 	void drawImage(QImage img, std::string name, int currentSpp, int goalSpp);
 
-	public slots:
+public slots:
 	void on_renderButton_clicked();
+    void saveImage();
 
 protected:
 	void closeEvent(QCloseEvent *event);
 	void resizeEvent(QResizeEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
 	void keyPressEvent(QKeyEvent *event);
 
 signals:
@@ -69,7 +65,6 @@ signals:
 	void smallpaint_pssmltSignal(smallpaint_pssmlt::Vec **pix, int spp);
 	void smallpaint_smallmediaSignal(smallpaint_smallmedia::Vec **pix, int spp);
 	void smallpaint_ppmSignal(smallpaint_ppm::Vec **pix, int spp);
-    void smallpaint_vrlSignal(smallpaint_vrl::Vec **pix, int spp, int vrls);
 
 	private slots:
 	void smallpaint_fixedSlot(smallpaint_fixed::Vec **pix, int spp);
@@ -78,7 +73,6 @@ signals:
 	void smallpaint_pssmltSlot(smallpaint_pssmlt::Vec **pix, int spp);
 	void smallpaint_smallmediaSlot(smallpaint_smallmedia::Vec **pix, int spp);
 	void smallpaint_ppmSlot(smallpaint_ppm::Vec **pix, int spp);
-    void smallpaint_vrlSlot(smallpaint_vrl::Vec **pix, int spp, int vrls);
 	void on_renderModesComboBox_currentTextChanged(const QString &arg1);
 
 private:
