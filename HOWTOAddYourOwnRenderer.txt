@@ -9,6 +9,7 @@ Work with the QtCreator, to avoid unnecessary complications.
 	- Add a test image to the test folder.
 	- Change the name of the file that contains the actual renderer to the name of the renderer (for example: smallpaint_painterly.cpp).
 	- In the QTCreator, add the files. They will be added to the Smallpaint.pro file automatically.
+	- Additionally, add the test image to the "resources.qrc" file.
 
 2. Edit mainwindow.ui: This can be done with the QtDesigner or manually.
 	- Add a new entry in the QComboBox with the name of your Renderer (for example: painterly).
@@ -40,6 +41,7 @@ Work with the QtCreator, to avoid unnecessary complications.
 
 5. Edit main.h:
 	- Copy an entry of the other namespaces and make one for your own namespace.
+	- If there are new variables that are not in the "RenderInfo" yet, add them there. Existing values can be reused.
 
 6. Edit sceneGeometries.h:
 	- Copy the "Vec" implementation and surround them with you namespace.
@@ -53,17 +55,15 @@ Work with the QtCreator, to avoid unnecessary complications.
 	- Add a new connect in the constructor with the names you have chosen before.
 	- Add your slot method to the end of the file, you can copy one of the othe slots and edit them accordingly.
 	- In "testRender(bool renderButtonActivated)" add conditions where all the other render modes have one. Adjust them accordingly and chose the next integer avaible.
-	
-	helper h
-	defaults
-	
+		
 9. Edit helperfunctions.cpp:
-	-setDefaults
-	- getRenderer
-	- In "changedComboBox(QString renderer)" add your own condition. Reset your QLineEdits here and set the current widget.
-	- In "getInput(QString selectedRenderer, int &spp, int &size, float &refr)" add your own condition. You can copy one of the other conditions and edit them to your liking.
+	- Add an entry in the "getRenderer" function with the name given in the QComboBox.
+	- In "changedComboBox(QString renderer)" add your own condition. Reset your QLineEdits to defaults and set the current widget.
+	- In "getInput(QString selectedRenderer, int &spp, int &size, float &refr)" add your own condition. You can copy one of the other conditions and edit them to your neeps.
+	_ If you have added new variables to "RenderInfo", set them here.
 	
 10. Edit mainrenderdistributor.cpp:
 	- Copy one of namespace blocks and edit it to your namespace.
 	- Exchange all "smallpaint_<oldRenderer>" with your renderer name (for example: smallpaint_painterly).
-	- In the "smallpaint" namespace block, add a new condition and adjust it accordingly.
+	- Adjust the color correction to what happened in you original file. Normally there is none, some algorithms scale by 255.
+	- In the "smallpaint" namespace block, add a new condition and adjust it accordingly. Provide the information needed for your render function.

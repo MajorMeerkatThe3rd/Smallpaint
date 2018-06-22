@@ -261,7 +261,7 @@ void sendToRender(RenderInfo info, std::string renderer) {
 			t.detach();
 		}
         if (renderer == "smallpaint_vrl") {
-            std::thread t(smallpaint_vrl::render, id, info.size, info.spp,  info.vrlps, info.scene, info.bounces, info.sigma_a, info.sigma_s, info.g, info.sampling, info.refr, info.mediumRadiance, info.surfaceRadiance);
+            std::thread t(smallpaint_vrl::render, id, info.size, info.spp,  info.vrlps, info.scene, info.bounces, info.sigma_a, info.sigma_s, info.g, info.sampling, info.refr, info.intensity, info.mediumRadiance, info.surfaceRadiance);
             t.detach();
         }
 		id++;

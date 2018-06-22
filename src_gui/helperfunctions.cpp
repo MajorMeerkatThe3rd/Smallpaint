@@ -107,6 +107,7 @@ void HelperFunctions::changedComboBox(QString renderer) {
         if (mainWindow->ui->vrlSigmaS->text() == "") mainWindow->ui->vrlSigmaS->setText(QString::number(.01));
         if (mainWindow->ui->vrlG->text() == "") mainWindow->ui->vrlG->setText(QString::number(0));
         if (mainWindow->ui->vrlRefraction->text() == "") mainWindow->ui->vrlRefraction->setText(QString::number(1.5));
+        if (mainWindow->ui->vrlIntensity->text() == "") mainWindow->ui->vrlIntensity->setText(QString::number(50000));
     }
 	if (renderer == "tests") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->tests);
@@ -149,7 +150,7 @@ float HelperFunctions::getTextAsFloat(QString text) {
  * Reads the input from the corresponding elements, assigns default values.
  */
 void HelperFunctions::getInput(QString selectedRenderer, smallpaint::RenderInfo &info) {
-    int size, spp, vrlps, bounces, scene, sampling;
+    int size, spp, vrlps, bounces, scene, sampling, intensity;
     double refr, sigma_a, sigma_s, g;
     bool mediumRadiance, surfaceRadiance;
 
@@ -195,6 +196,7 @@ void HelperFunctions::getInput(QString selectedRenderer, smallpaint::RenderInfo 
         vrlps = getTextAsInt(mainWindow->ui->vrlVRLPS->text());
         size = getTextAsInt(mainWindow->ui->vrlSize->text());
         bounces = getTextAsInt(mainWindow->ui->vrlBounces->text());
+        intensity = getTextAsInt(mainWindow->ui->vrlIntensity->text());
         scene = mainWindow->ui->vrlScene->currentIndex();
         sampling = mainWindow->ui->vrlSampling->currentIndex();
         refr = getTextAsFloat(mainWindow->ui->vrlRefraction->text());
@@ -221,6 +223,10 @@ void HelperFunctions::getInput(QString selectedRenderer, smallpaint::RenderInfo 
     if (bounces == -1) bounces = 1;
     if (bounces < 1) bounces = 1;
     info.bounces = bounces;
+
+    if (intensity == -1) intensity = 50000;
+    if (intensity < 1) intensity = 1000;
+    info.intensity = intensity;
 
     if (scene == -1) scene = 0;
     if (scene < 0 || scene > 5) scene = 0;

@@ -39,8 +39,9 @@ void loadScene(Scene& scene, RenderSettings& s) {
 		s.sigma_a = s.sigma_a == -1 ? .1 : s.sigma_a;
 		s.sigma_s = s.sigma_s == -1 ? .01 : s.sigma_s;
 		s.lightType = s.lightType == -1 ? LIGHT_DIR : s.lightType;
+        s.intensity = s.intensity == -1 ? 50000 : s.intensity;
 
-		Pointlight* pointlight = new Pointlight(Vec(0, 1.9, -3), Vec(50000));
+        Pointlight* pointlight = new Pointlight(Vec(0, 1.9, -3), Vec(s.intensity));
 		scene.add(pointlight);
 		Medium* medium = new Medium(s.sigma_a, s.sigma_s, s.g, NULL);
 		scene.add(medium);
@@ -59,8 +60,9 @@ void loadScene(Scene& scene, RenderSettings& s) {
 		s.sigma_a = s.sigma_a == -1 ? .1 : s.sigma_a;
 		s.sigma_s = s.sigma_s == -1 ? .25 : s.sigma_s;
 		s.lightType = s.lightType == -1 ? LIGHT_BIDIR : s.lightType;
+        s.intensity = s.intensity == -1 ? 250 : s.intensity;
 
-		Pointlight* pointlight = new Pointlight(Vec(0, 0, -2), Vec(250));
+        Pointlight* pointlight = new Pointlight(Vec(0, 0, -2), Vec(s.intensity));
 		scene.add(pointlight);
 		Medium* medium = new Medium(s.sigma_a, s.sigma_s, s.g, NULL);
 		scene.add(medium);
@@ -68,7 +70,9 @@ void loadScene(Scene& scene, RenderSettings& s) {
 		/** infinite medium point light settings - unidirectional */
 		s.sigma_a = s.sigma_a == -1 ? .1 : s.sigma_a;
 		s.sigma_s = s.sigma_s == -1 ? .25 : s.sigma_s;
-		Pointlight* pointlight = new Pointlight(Vec(0, 0, -2), Vec(100));
+        s.intensity = s.intensity == -1 ? 100 : s.intensity;
+
+        Pointlight* pointlight = new Pointlight(Vec(0, 0, -2), Vec(s.intensity));
 		scene.add(pointlight);
 		Medium* medium = new Medium(s.sigma_a, s.sigma_s, s.g, NULL);
 		scene.add(medium);
@@ -76,6 +80,7 @@ void loadScene(Scene& scene, RenderSettings& s) {
 		/** sphere corner settings */
 		s.sigma_a = s.sigma_a == -1 ? .65 : s.sigma_a;
 		s.sigma_s = s.sigma_s == -1 ? .5 : s.sigma_s;
+        s.intensity = s.intensity == -1 ? s.scene == 3 ? 250000: 3500000 : s.intensity;
 
 		add(new Plane(5.2, Vec(0.973562, -0.226953, -0.025893)), Vec(1, 129.0/255.0, 0), 0, 1); // Left plane
 		add(new Plane(0.3, Vec(-0.973562, 0.226953, 0.025893)), Vec(0, 242.0/255.0, 1), 0, 1); // Right plane
@@ -85,7 +90,7 @@ void loadScene(Scene& scene, RenderSettings& s) {
 		add(new Plane(4.0, Vec(0.122788, -0.007596, -0.992404)), Vec(.5, .5, .5), 0, 1); // Front plane
 
 		add(new Sphere(0.25, Vec(0, 0, -.8)), Vec(1, 1, 1), 0, 1); // Left sphere
-		Pointlight* pointlight = new Pointlight(Vec(-2.45, 2.35, 1.25), Vec(s.scene == 3 ? 250000: 3500000));
+        Pointlight* pointlight = new Pointlight(Vec(-2.45, 2.35, 1.25), Vec(s.intensity));
 		scene.add(pointlight);
 		Medium* medium = new Medium(s.sigma_a, s.sigma_s, s.g, NULL);
 		scene.add(medium);
@@ -101,8 +106,9 @@ void loadScene(Scene& scene, RenderSettings& s) {
 		/** small medium cube settings */
         s.sigma_a = s.sigma_a == -1 ? .5 : s.sigma_a;
         s.sigma_s = s.sigma_s == -1 ? .1 : s.sigma_s;
+        s.intensity = s.intensity == -1 ? 500000 : s.intensity;
 
-        Pointlight* pointlight = new Pointlight(Vec(0, 1.9, -3), Vec(500000));
+        Pointlight* pointlight = new Pointlight(Vec(0, 1.9, -3), Vec(s.intensity));
 		scene.add(pointlight);
 		double size = .75;
 		Vec mid = Vec(0, -1, -3);

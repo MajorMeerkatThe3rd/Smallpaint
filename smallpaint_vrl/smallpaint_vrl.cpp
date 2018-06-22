@@ -68,6 +68,7 @@ struct RenderSettings {
 	int bounces = -1;
 	int sampling = -1;
 	int lightType = -1;
+    int intensity = -1;
 
 	double fov = PI/4;
 
@@ -1076,7 +1077,7 @@ bool progression = false;
 bool timecomp = false;
 string testname = "";
 
-void render(int id, int size, int spp, int vrlps, int sceneID, int bounces, double sigma_a, double sigma_s, double g, int sampling, double refr_index, bool mediumRadiance, bool surfaceRadiance) {
+void render(int id, int size, int spp, int vrlps, int sceneID, int bounces, double sigma_a, double sigma_s, double g, int sampling, double refr_index, int intensity, bool mediumRadiance, bool surfaceRadiance) {
     RenderSettings settings = RenderSettings();
     settings.spp = spp;
     settings.vrlps = vrlps;
@@ -1086,6 +1087,7 @@ void render(int id, int size, int spp, int vrlps, int sceneID, int bounces, doub
     settings.sigma_s = sigma_s;
     settings.g = g;
     settings.sampling = sampling;
+    settings.intensity = intensity;
     settings.mediumRadiance = mediumRadiance;
     settings.surfaceRadiance = surfaceRadiance;
 

@@ -5,7 +5,7 @@ Image::Image(QWidget *parent) : QWidget(parent) {
 
     _label = new QLabel;
     _label->setAlignment(Qt::AlignCenter);
-    _label->setPixmap(QPixmap::fromImage(QImage("../test_images/logo.png")).scaled(512, 512));
+    _label->setPixmap(QPixmap::fromImage(QImage(":/test_images/logo.png")).scaled(512, 512));
     layout->addWidget(_label, Qt::AlignCenter);
     this->setLayout(layout);
 }

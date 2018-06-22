@@ -61,3 +61,6 @@ HEADERS  += \
 FORMS    += \
     mainwindow.ui \
     testwindow.ui
+
+RESOURCES = resources.qrc \
+    resources.qrc

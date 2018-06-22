@@ -42,7 +42,7 @@ void processImage(Vec **pix, int spp);
 namespace smallpaint {
 
 struct RenderInfo {
-  int size = 512, spp = 50, vrlps = 10, bounces = 1, scene = 0, sampling = 4;
+  int size = 512, spp = 50, vrlps = 10, bounces = 1, scene = 0, sampling = 4, intensity = 1000;
   double refr = 1.5, sigma_a = 0.1, sigma_s = 0.01, g = 0.0;
   bool mediumRadiance = true, surfaceRadiance = true;
 };

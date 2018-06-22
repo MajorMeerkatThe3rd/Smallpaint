@@ -1498,6 +1498,50 @@
                   </widget>
                  </item>
                  <item>
+                  <widget class="Line" name="line_21">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_28">
+                   <item>
+                    <widget class="QLabel" name="vrlIntensityLabel">
+                     <property name="font">
+                      <font>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Light Intensity</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="vrlIntensity">
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_26">
+                   <property name="text">
+                    <string>The intensity of the light.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <spacer name="verticalSpacer_7">
                    <property name="orientation">
                     <enum>Qt::Vertical</enum>
@@ -1618,6 +1662,16 @@
                   </layout>
                  </item>
                  <item>
+                  <widget class="QLabel" name="label_22">
+                   <property name="text">
+                    <string>The importance sampling strategy for the light rays / camera rays.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="Line" name="line_18">
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -1649,7 +1703,7 @@
                      </property>
                      <item>
                       <property name="text">
-                       <string>Cornell box</string>
+                       <string>Cornell Box</string>
                       </property>
                      </item>
                      <item>

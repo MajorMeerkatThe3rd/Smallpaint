@@ -86,14 +86,12 @@ void MainWindow::drawImage(QImage img, std::string name, int currentSpp, int goa
     image = img.copy();
     if (name == "logo"){
         ui->image->setImage(image);
-        //ui->renderedImage->setPixmap(QPixmap::fromImage(image));
         resizeImage();
     } else {
         if (!testing) {
             lastImage = name;
             helper.updateInfo(currentSpp, goalSpp);
             ui->image->setImage(image);
-            //ui->renderedImage->setPixmap(QPixmap::fromImage(image));
             resizeImage();
         } else {
             helper.updateInfo(currentSpp, goalSpp);
@@ -122,7 +120,7 @@ void MainWindow::on_renderButton_clicked() {
         helper.getInput(selectedRenderer, info);
         helper.initializeRenderInformation(selectedRenderer, info);
 
-        drawImage(QImage("../test_images/logo_processing.png"), "logo", 0, spp);
+        drawImage(QImage(":/test_images/logo_processing.png"), "logo", 0, spp);
 
 		start = clock();
         smallpaint::sendToRender(info, "smallpaint_" + selectedRenderer.toStdString());
@@ -204,7 +202,7 @@ void MainWindow::testRender(bool renderButtonActivated) {
 			testRenderer = "smallpaint_smallmedia";
 		} else if (tests.at(0) == 5) {
 			testRenderer = "smallpaint_ppm";
-            spp *= 100000;
+            info.spp *= 100000;
         } else if (tests.at(0) == 6) {
             testRenderer = "smallpaint_vrl";
         }
@@ -214,7 +212,7 @@ void MainWindow::testRender(bool renderButtonActivated) {
 
 		testWindow = new TestWindow;
 		testWindow->setWindowTitle(testRenderer);
-        testWindow->setFirstImage(QImage("../test_images/" + testRenderer + ".ppm"));
+        testWindow->setFirstImage(QImage(":/test_images/" + testRenderer + ".ppm"));
 		testWindow->setWindowFlags(Qt::WindowTitleHint);
 		testWindow->show();
 
