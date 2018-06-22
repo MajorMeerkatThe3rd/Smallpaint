@@ -14,7 +14,7 @@ TestWindow::~TestWindow() {
 void TestWindow::setFirstImage(QImage img) {
 	comparisonImage = img;
 	//ui->label->setText("Rendering...");
-	ui->img1->setPixmap(QPixmap::fromImage(img));
+    ui->img1->setPixmap(QPixmap::fromImage(img).scaled(512, 512));
 }
 
 void TestWindow::setSecondImage(QImage img) {

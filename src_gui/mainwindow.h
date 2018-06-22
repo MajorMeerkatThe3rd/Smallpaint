@@ -38,6 +38,10 @@ namespace smallpaint_ppm {
 struct Vec;
 }
 
+namespace smallpaint_vrl {
+struct Vec;
+}
+
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
@@ -64,7 +68,8 @@ signals:
 	void smallpaint_bvhSignal(smallpaint_bvh::Vec **pix, int spp);
 	void smallpaint_pssmltSignal(smallpaint_pssmlt::Vec **pix, int spp);
 	void smallpaint_smallmediaSignal(smallpaint_smallmedia::Vec **pix, int spp);
-	void smallpaint_ppmSignal(smallpaint_ppm::Vec **pix, int spp);
+    void smallpaint_ppmSignal(smallpaint_ppm::Vec **pix, int spp);
+    void smallpaint_vrlSignal(smallpaint_vrl::Vec **pix, int spp);
 
 	private slots:
 	void smallpaint_fixedSlot(smallpaint_fixed::Vec **pix, int spp);
@@ -72,8 +77,11 @@ signals:
 	void smallpaint_bvhSlot(smallpaint_bvh::Vec **pix, int spp);
 	void smallpaint_pssmltSlot(smallpaint_pssmlt::Vec **pix, int spp);
 	void smallpaint_smallmediaSlot(smallpaint_smallmedia::Vec **pix, int spp);
-	void smallpaint_ppmSlot(smallpaint_ppm::Vec **pix, int spp);
-	void on_renderModesComboBox_currentTextChanged(const QString &arg1);
+    void smallpaint_ppmSlot(smallpaint_ppm::Vec **pix, int spp);
+    void smallpaint_vrlSlot(smallpaint_vrl::Vec **pix, int spp);
+    void on_renderModesComboBox_currentTextChanged(const QString &arg1);
+
+    void on_vrlScene_currentIndexChanged(int index);
 
 private:
 	Ui::MainWindow *ui;

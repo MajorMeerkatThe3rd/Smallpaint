@@ -16,3 +16,7 @@ void render(int id, int size, int spp, double refr_index);
 namespace smallpaint_ppm {
 void render(int id, int size, int spp, double refr_index);
 }
+namespace smallpaint_vrl {
+void render(int id, int size, int spp, int vrlps, int scene, int bounces, double sigma_a, double sigma_s, double g, int sampling, double refr_index, bool mediumRadiance, bool surfaceRadiance);
+}
+

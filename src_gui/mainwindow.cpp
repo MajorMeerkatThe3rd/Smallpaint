@@ -23,7 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
 			this, SLOT(smallpaint_smallmediaSlot(smallpaint_smallmedia::Vec**, int)));
 	connect(this, SIGNAL(smallpaint_ppmSignal(smallpaint_ppm::Vec**, int)),
 			this, SLOT(smallpaint_ppmSlot(smallpaint_ppm::Vec**, int)));
-	helper.setDefaults();
+    connect(this, SIGNAL(smallpaint_vrlSignal(smallpaint_vrl::Vec**, int)),
+            this, SLOT(smallpaint_vrlSlot(smallpaint_vrl::Vec**, int)));
 }
 
 /**
@@ -117,13 +118,14 @@ void MainWindow::on_renderButton_clicked() {
 		int size = 0;
 		float refr = 0;
 
-		helper.getInput(selectedRenderer, spp, size, refr);
-		helper.initializeRenderInformation(selectedRenderer, spp, size, refr);
+        smallpaint::RenderInfo info;
+        helper.getInput(selectedRenderer, info);
+        helper.initializeRenderInformation(selectedRenderer, info);
 
         drawImage(QImage("../test_images/logo_processing.png"), "logo", 0, spp);
 
 		start = clock();
-		smallpaint::sendToRender(size, spp, refr, "smallpaint_" + selectedRenderer.toStdString());
+        smallpaint::sendToRender(info, "smallpaint_" + selectedRenderer.toStdString());
 	} else {
 		ui->renderButton->setText("Render");
 		if (!isRendering()) {
@@ -174,8 +176,9 @@ void MainWindow::testRender(bool renderButtonActivated) {
 			if (ui->bvhTest->isChecked()) tests.push_back(2);
 			if (ui->pssmltTest->isChecked()) tests.push_back(3);
 			if (ui->smallmediaTest->isChecked()) tests.push_back(4);
-			if (ui->ppmTest->isChecked()) tests.push_back(5);
-		} else if (testing && tests.size() == 0) {
+            if (ui->ppmTest->isChecked()) tests.push_back(5);
+            if (ui->vrlTest->isChecked()) tests.push_back(6);
+        } else if (testing && tests.size() == 0) {
 			ui->renderButton->setText("Cancel");
 			testing = false;
 			tests.clear();
@@ -183,9 +186,10 @@ void MainWindow::testRender(bool renderButtonActivated) {
 			return;
 		}
 
-		spp = 10000;
-		size = 400;
-		refr = 1.5;
+        smallpaint::RenderInfo info;
+        info.spp = 10000;
+        info.size = 512;
+        info.refr = 1.5;
 		testing = true;
 
 		if (tests.at(0) == 0) {
@@ -201,10 +205,12 @@ void MainWindow::testRender(bool renderButtonActivated) {
 		} else if (tests.at(0) == 5) {
 			testRenderer = "smallpaint_ppm";
             spp *= 100000;
-		}
+        } else if (tests.at(0) == 6) {
+            testRenderer = "smallpaint_vrl";
+        }
 		tests.erase(tests.begin());
 
-		helper.initializeRenderInformation(testRenderer, spp, size, refr);
+        helper.initializeRenderInformation(testRenderer, info);
 
 		testWindow = new TestWindow;
 		testWindow->setWindowTitle(testRenderer);
@@ -213,7 +219,7 @@ void MainWindow::testRender(bool renderButtonActivated) {
 		testWindow->show();
 
 		start = clock();
-		smallpaint::sendToRender(size, spp, refr, testRenderer.toStdString());
+        smallpaint::sendToRender(info, testRenderer.toStdString());
 	}
 }
 
@@ -243,4 +249,42 @@ void MainWindow::smallpaint_smallmediaSlot(smallpaint_smallmedia::Vec **pix, int
 
 void MainWindow::smallpaint_ppmSlot(smallpaint_ppm::Vec **pix, int spp) {
 	smallpaint_ppm::processImage(pix, spp);
+}
+
+void MainWindow::smallpaint_vrlSlot(smallpaint_vrl::Vec **pix, int spp) {
+    smallpaint_vrl::processImage(pix, spp);
+}
+
+void MainWindow::on_vrlScene_currentIndexChanged(int index) {
+    ui->vrlSize->setText(QString::number(512));
+    ui->vrlSamples->setText(QString::number(100));
+    ui->vrlVRLPS->setText(QString::number(10));
+    ui->vrlBounces->setText(QString::number(1));
+    ui->vrlRefraction->setText(QString::number(1.5));
+
+    if(index == 0){
+        ui->vrlSigmaA->setText(QString::number(.1));
+        ui->vrlSigmaS->setText(QString::number(.01));
+        ui->vrlG->setText(QString::number(0));
+        ui->vrlMediumRadiance->setChecked(true);
+        ui->vrlSurfaceRadiance->setChecked(true);
+    }else if(index == 1 || index == 2){
+        ui->vrlSigmaA->setText(QString::number(.1));
+        ui->vrlSigmaS->setText(QString::number(.25));
+        ui->vrlG->setText(QString::number(0));
+        ui->vrlMediumRadiance->setChecked(true);
+        ui->vrlSurfaceRadiance->setChecked(false);
+    }else if(index == 3 || index == 4){
+        ui->vrlSigmaA->setText(QString::number(.65));
+        ui->vrlSigmaS->setText(QString::number(.5));
+        ui->vrlG->setText(QString::number(0));
+        ui->vrlMediumRadiance->setChecked(index == 3);
+        ui->vrlSurfaceRadiance->setChecked(index == 4);
+    }else if(index == 5){
+        ui->vrlSigmaA->setText(QString::number(.5));
+        ui->vrlSigmaS->setText(QString::number(.1));
+        ui->vrlG->setText(QString::number(0));
+        ui->vrlMediumRadiance->setChecked(true);
+        ui->vrlSurfaceRadiance->setChecked(true);
+    }
 }

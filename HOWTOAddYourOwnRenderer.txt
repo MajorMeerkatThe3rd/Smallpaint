@@ -16,7 +16,7 @@ Work with the QtCreator, to avoid unnecessary complications.
 	- Add QLabels and QLineEdits to this newly created QWidget. You can copy/paste them from other entries.
 		These are the parameters that are given to your renderer.
 	- QLineEdits should be named <Parametername> (for example: painterlySize).
-	- Add a QRadioButton in the "tests" QWidget and name it <nenderername>Test (for example: painterlyTest).
+	- Add a QRadioButton in the "tests" QWidget and name it <renderername>Test (for example: painterlyTest).
 
 3. Edit your own files:
 	- Put everything in a namespace, that namespace should be named after your renderer (for example: smallpaint_painterly).

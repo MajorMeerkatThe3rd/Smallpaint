@@ -196,39 +196,74 @@ void processImage(smallpaint_ppm::Vec **pix, int s) {
 
 }
 
+namespace smallpaint_vrl {
+
+void imageOutput(smallpaint_vrl::Vec **pix, int s) {
+
+    emit win->smallpaint_vrlSignal(pix, s);
+}
+
+int toInt(double x) {
+    return min((int)(x * 255.0), 255);
+}
+
+void processImage(smallpaint_vrl::Vec **pix, int s) {
+    s++;
+    std::string name = currentRenderer + "_" + to_string(s) + "_spp.ppm";
+
+    QImage image(win->width, win->height, QImage::Format_RGB32);
+
+    for (int col = 0; col < win->width; col++) {
+        for (int row = 0; row < win->height; row++) {
+            image.setPixel(col, row, qRgb(toInt(pix[col][row].x / (float)s), toInt(pix[col][row].y / (float)s), toInt(pix[col][row].z / (float)s)));
+        }
+    }
+    win->drawImage(image, name, s, spp);
+    if (spp == s) {
+        rendering = false;
+        emit win->on_renderButton_clicked();
+    }
+}
+
+}
+
 namespace smallpaint {
 
-void sendToRender(int size, int s, float refr, std::string renderer) {
+void sendToRender(RenderInfo info, std::string renderer) {
 	if (!rendering) {
-		spp = s;
+        spp = info.spp;
 		rendering = true;
 		currentID = id;
 		running.push_back(true);
 		currentRenderer = renderer;
 		if (renderer == "smallpaint_fixed") {
-			std::thread t(smallpaint_fixed::render, id, size, spp, refr);
+            std::thread t(smallpaint_fixed::render, id, info.size, info.spp, info.refr);
 			t.detach();
 		}
 		if (renderer == "smallpaint_painterly") {
-			std::thread t(smallpaint_painterly::render, id, size, spp, refr);
+            std::thread t(smallpaint_painterly::render, id, info.size, info.spp, info.refr);
 			t.detach();
 		}
 		if (renderer == "smallpaint_bvh") {
-			std::thread t(smallpaint_bvh::render, id, size, spp, refr);
+            std::thread t(smallpaint_bvh::render, id, info.size, info.spp, info.refr);
 			t.detach();
 		}
 		if (renderer == "smallpaint_pssmlt") {
-			std::thread t(smallpaint_pssmlt::render, id, size, spp, refr);
+            std::thread t(smallpaint_pssmlt::render, id, info.size, info.spp, info.refr);
 			t.detach();
 		}
 		if (renderer == "smallpaint_smallmedia") {
-			std::thread t(smallpaint_smallmedia::render, id, size, spp, refr);
+            std::thread t(smallpaint_smallmedia::render, id, info.size, info.spp, info.refr);
 			t.detach();
 		}
 		if (renderer == "smallpaint_ppm") {
-			std::thread t(smallpaint_ppm::render, id, size, spp, refr);
+            std::thread t(smallpaint_ppm::render, id, info.size, info.spp, info.refr);
 			t.detach();
 		}
+        if (renderer == "smallpaint_vrl") {
+            std::thread t(smallpaint_vrl::render, id, info.size, info.spp,  info.vrlps, info.scene, info.bounces, info.sigma_a, info.sigma_s, info.g, info.sampling, info.refr, info.mediumRadiance, info.surfaceRadiance);
+            t.detach();
+        }
 		id++;
 	}
 }

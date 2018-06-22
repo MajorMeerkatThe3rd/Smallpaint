@@ -1,3 +1,5 @@
+#pragma once
+
 void setRendering(bool rendering);
 bool isRendering();
 void cancelRendering();
@@ -32,7 +34,19 @@ struct Vec;
 void imageOutput(Vec **pix, int spp);
 void processImage(Vec **pix, int spp);
 }
+namespace smallpaint_vrl {
+struct Vec;
+void imageOutput(Vec **pix, int spp);
+void processImage(Vec **pix, int spp);
+}
 namespace smallpaint {
+
+struct RenderInfo {
+  int size = 512, spp = 50, vrlps = 10, bounces = 1, scene = 0, sampling = 4;
+  double refr = 1.5, sigma_a = 0.1, sigma_s = 0.01, g = 0.0;
+  bool mediumRadiance = true, surfaceRadiance = true;
+};
+
 bool isRunning(int id);
-void sendToRender(int size, int spp, float refr, std::string renderer);
+void sendToRender(RenderInfo info, std::string renderer);
 }

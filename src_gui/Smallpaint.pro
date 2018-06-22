@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     testwindow.cpp \
     helperfunctions.cpp \
     ../smallpaint_ppm/smallpaint_ppm.cpp \
-    image.cpp
+    image.cpp \
+    ../smallpaint_vrl/smallpaint_vrl.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -53,7 +54,9 @@ HEADERS  += \
     sceneGeometries.h \
     testwindow.h \
     helperfunctions.h \
-    image.h
+    image.h \
+    ../smallpaint_vrl/smallpaint_vrl_distanceFunctions.h \
+    ../smallpaint_vrl/smallpaint_vrl_tests.h
 
 FORMS    += \
     mainwindow.ui \

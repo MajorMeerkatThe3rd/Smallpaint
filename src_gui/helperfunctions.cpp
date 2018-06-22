@@ -11,18 +11,6 @@ void setInstanceForHelperFunctions(MainWindow* w) {
 }
 
 /**
- * Creates the defaults.
- */
-void HelperFunctions::setDefaults() {
-    fixedDefaults = defaults(50, 1, 400, 250, 2500, 1.5, 1., 5.);
-	painterlyDefaults = defaults(50, 1, 400, 250, 2500, 1.5, 1., 5.);
-	bvhDefaults = defaults(50, 1, 400, 250, 2500, 1.5, 1., 5.);
-	pssmltDefaults = defaults(10, 1, 400, 250, 2500, 1.5, 1., 5.);
-	smallmediaDefaults = defaults(20, 1, 400, 250, 2500, 1.5, 1., 5.);
-	ppmDefaults = defaults(1000, 1, 400, 250, 1500, 1.5, 1., 5.);
-}
-
-/**
  * Saves image to specified path.
  */
 void HelperFunctions::saveImage() {
@@ -60,6 +48,9 @@ QString HelperFunctions::getRenderer(QString renderer) {
 	if (renderer == "Progressive Photon Mapping") {
 		return "ppm";
 	}
+    if (renderer == "Virtual Ray Lights") {
+        return "vrl";
+    }
 	if (renderer == "Tests") {
 		return "tests";
 	}
@@ -72,40 +63,51 @@ QString HelperFunctions::getRenderer(QString renderer) {
 void HelperFunctions::changedComboBox(QString renderer) {
 	if (renderer == "fixed") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->fixed);
-		if (mainWindow->ui->fixedSize->text() == "") mainWindow->ui->fixedSize->setText(QString::number(fixedDefaults.size));
-		if (mainWindow->ui->fixedSamples->text() == "") mainWindow->ui->fixedSamples->setText(QString::number(fixedDefaults.spp));
-		if (mainWindow->ui->fixedRefraction->text() == "") mainWindow->ui->fixedRefraction->setText(QString::number(fixedDefaults.refr));
+        if (mainWindow->ui->fixedSize->text() == "") mainWindow->ui->fixedSize->setText(QString::number(512));
+        if (mainWindow->ui->fixedSamples->text() == "") mainWindow->ui->fixedSamples->setText(QString::number(50));
+        if (mainWindow->ui->fixedRefraction->text() == "") mainWindow->ui->fixedRefraction->setText(QString::number(1.5));
 	}
 	if (renderer == "painterly") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->painterly);
-		if (mainWindow->ui->painterlySize->text() == "") mainWindow->ui->painterlySize->setText(QString::number(painterlyDefaults.size));
-		if (mainWindow->ui->painterlySamples->text() == "") mainWindow->ui->painterlySamples->setText(QString::number(painterlyDefaults.spp));
-		if (mainWindow->ui->painterlyRefraction->text() == "") mainWindow->ui->painterlyRefraction->setText(QString::number(painterlyDefaults.refr));
+        if (mainWindow->ui->painterlySize->text() == "") mainWindow->ui->painterlySize->setText(QString::number(512));
+        if (mainWindow->ui->painterlySamples->text() == "") mainWindow->ui->painterlySamples->setText(QString::number(50));
+        if (mainWindow->ui->painterlyRefraction->text() == "") mainWindow->ui->painterlyRefraction->setText(QString::number(1.5));
 	}
 	if (renderer == "bvh") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->bvh);
-		if (mainWindow->ui->bvhSize->text() == "") mainWindow->ui->bvhSize->setText(QString::number(bvhDefaults.size));
-		if (mainWindow->ui->bvhSamples->text() == "") mainWindow->ui->bvhSamples->setText(QString::number(bvhDefaults.spp));
-		if (mainWindow->ui->bvhRefraction->text() == "") mainWindow->ui->bvhRefraction->setText(QString::number(bvhDefaults.refr));
+        if (mainWindow->ui->bvhSize->text() == "") mainWindow->ui->bvhSize->setText(QString::number(512));
+        if (mainWindow->ui->bvhSamples->text() == "") mainWindow->ui->bvhSamples->setText(QString::number(50));
+        if (mainWindow->ui->bvhRefraction->text() == "") mainWindow->ui->bvhRefraction->setText(QString::number(1.5));
 	}
 	if (renderer == "pssmlt") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->pssmlt);
-		if (mainWindow->ui->pssmltSize->text() == "") mainWindow->ui->pssmltSize->setText(QString::number(pssmltDefaults.size));
-		if (mainWindow->ui->pssmltSamples->text() == "") mainWindow->ui->pssmltSamples->setText(QString::number(pssmltDefaults.spp));
-		if (mainWindow->ui->pssmltRefraction->text() == "") mainWindow->ui->pssmltRefraction->setText(QString::number(pssmltDefaults.refr));
+        if (mainWindow->ui->pssmltSize->text() == "") mainWindow->ui->pssmltSize->setText(QString::number(512));
+        if (mainWindow->ui->pssmltSamples->text() == "") mainWindow->ui->pssmltSamples->setText(QString::number(50));
+        if (mainWindow->ui->pssmltRefraction->text() == "") mainWindow->ui->pssmltRefraction->setText(QString::number(1.5));
 	}
 	if (renderer == "smallmedia") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->smallmedia);
-		if (mainWindow->ui->smallmediaSize->text() == "") mainWindow->ui->smallmediaSize->setText(QString::number(smallmediaDefaults.size));
-		if (mainWindow->ui->smallmediaSamples->text() == "") mainWindow->ui->smallmediaSamples->setText(QString::number(smallmediaDefaults.spp));
-		if (mainWindow->ui->smallmediaRefraction->text() == "") mainWindow->ui->smallmediaRefraction->setText(QString::number(smallmediaDefaults.refr));
+        if (mainWindow->ui->smallmediaSize->text() == "") mainWindow->ui->smallmediaSize->setText(QString::number(512));
+        if (mainWindow->ui->smallmediaSamples->text() == "") mainWindow->ui->smallmediaSamples->setText(QString::number(50));
+        if (mainWindow->ui->smallmediaRefraction->text() == "") mainWindow->ui->smallmediaRefraction->setText(QString::number(1.5));
 	}
 	if (renderer == "ppm") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->ppm);
-		if (mainWindow->ui->ppmSize->text() == "") mainWindow->ui->ppmSize->setText(QString::number(ppmDefaults.size));
-		if (mainWindow->ui->ppmSamples->text() == "") mainWindow->ui->ppmSamples->setText(QString::number(ppmDefaults.spp));
-		if (mainWindow->ui->ppmRefraction->text() == "") mainWindow->ui->ppmRefraction->setText(QString::number(ppmDefaults.refr));
+        if (mainWindow->ui->ppmSize->text() == "") mainWindow->ui->ppmSize->setText(QString::number(512));
+        if (mainWindow->ui->ppmSamples->text() == "") mainWindow->ui->ppmSamples->setText(QString::number(1000));
+        if (mainWindow->ui->ppmRefraction->text() == "") mainWindow->ui->ppmRefraction->setText(QString::number(1.5));
 	}
+    if (renderer == "vrl") {
+        mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->vrl);
+        if (mainWindow->ui->vrlSize->text() == "") mainWindow->ui->vrlSize->setText(QString::number(512));
+        if (mainWindow->ui->vrlSamples->text() == "") mainWindow->ui->vrlSamples->setText(QString::number(100));
+        if (mainWindow->ui->vrlVRLPS->text() == "") mainWindow->ui->vrlVRLPS->setText(QString::number(10));
+        if (mainWindow->ui->vrlBounces->text() == "") mainWindow->ui->vrlBounces->setText(QString::number(1));
+        if (mainWindow->ui->vrlSigmaA->text() == "") mainWindow->ui->vrlSigmaA->setText(QString::number(.1));
+        if (mainWindow->ui->vrlSigmaS->text() == "") mainWindow->ui->vrlSigmaS->setText(QString::number(.01));
+        if (mainWindow->ui->vrlG->text() == "") mainWindow->ui->vrlG->setText(QString::number(0));
+        if (mainWindow->ui->vrlRefraction->text() == "") mainWindow->ui->vrlRefraction->setText(QString::number(1.5));
+    }
 	if (renderer == "tests") {
 		mainWindow->ui->renderModesSettings->setCurrentWidget(mainWindow->ui->tests);
 	}
@@ -146,137 +148,128 @@ float HelperFunctions::getTextAsFloat(QString text) {
 /**
  * Reads the input from the corresponding elements, assigns default values.
  */
-void HelperFunctions::getInput(QString selectedRenderer, int &spp, int &size, float &refr) {
-	if (selectedRenderer == "fixed") {
+void HelperFunctions::getInput(QString selectedRenderer, smallpaint::RenderInfo &info) {
+    int size, spp, vrlps, bounces, scene, sampling;
+    double refr, sigma_a, sigma_s, g;
+    bool mediumRadiance, surfaceRadiance;
 
+    if (selectedRenderer == "fixed") {
 		spp = getTextAsInt(mainWindow->ui->fixedSamples->text());
-		if (spp == -1) spp = fixedDefaults.spp;
-		if (spp < fixedDefaults.minSpp) spp = fixedDefaults.minSpp;
-
 		size = getTextAsInt(mainWindow->ui->fixedSize->text());
-		if (size == -1) size = fixedDefaults.size;
-		if (size < fixedDefaults.minSize) size = fixedDefaults.minSize;
-		if (size > fixedDefaults.maxSize) size = fixedDefaults.maxSize;
-
 		refr = getTextAsFloat(mainWindow->ui->fixedRefraction->text());
-		if (refr == -1) refr = fixedDefaults.refr;
-		if (refr < fixedDefaults.minRefr) refr = fixedDefaults.minRefr;
-		if (refr > fixedDefaults.maxRefr) refr = fixedDefaults.maxRefr;
-
 	}
 
 	if (selectedRenderer == "painterly") {
-
 		spp = getTextAsInt(mainWindow->ui->painterlySamples->text());
-		if (spp == -1) spp = painterlyDefaults.spp;
-		if (spp < painterlyDefaults.minSpp) spp = painterlyDefaults.minSpp;
-
 		size = getTextAsInt(mainWindow->ui->painterlySize->text());
-		if (size == -1) size = painterlyDefaults.size;
-		if (size < painterlyDefaults.minSize) size = painterlyDefaults.minSize;
-		if (size > painterlyDefaults.maxSize) size = painterlyDefaults.maxSize;
-
 		refr = getTextAsFloat(mainWindow->ui->painterlyRefraction->text());
-		if (refr == -1) refr = painterlyDefaults.refr;
-		if (refr < painterlyDefaults.minRefr) refr = painterlyDefaults.minRefr;
-		if (refr > painterlyDefaults.maxRefr) refr = painterlyDefaults.maxRefr;
-
 	}
 
 	if (selectedRenderer == "bvh") {
-
 		spp = getTextAsInt(mainWindow->ui->bvhSamples->text());
-		if (spp == -1) spp = bvhDefaults.spp;
-		if (spp < bvhDefaults.minSpp) spp = bvhDefaults.minSpp;
-
 		size = getTextAsInt(mainWindow->ui->bvhSize->text());
-		if (size == -1) size = bvhDefaults.size;
-		if (size < bvhDefaults.minSize) size = bvhDefaults.minSize;
-		if (size > bvhDefaults.maxSize) size = bvhDefaults.maxSize;
-
 		refr = getTextAsFloat(mainWindow->ui->bvhRefraction->text());
-		if (refr == -1) refr = bvhDefaults.refr;
-		if (refr < bvhDefaults.minRefr) refr = bvhDefaults.minRefr;
-		if (refr > bvhDefaults.maxRefr) refr = bvhDefaults.maxRefr;
-
 	}
 
 	if (selectedRenderer == "pssmlt") {
-
 		spp = getTextAsInt(mainWindow->ui->pssmltSamples->text());
-		if (spp == -1) spp = pssmltDefaults.spp;
-		if (spp < pssmltDefaults.minSpp) spp = pssmltDefaults.minSpp;
-
 		size = getTextAsInt(mainWindow->ui->pssmltSize->text());
-		if (size == -1) size = pssmltDefaults.size;
-		if (size < pssmltDefaults.minSize) size = pssmltDefaults.minSize;
-		if (size > pssmltDefaults.maxSize) size = pssmltDefaults.maxSize;
-
 		refr = getTextAsFloat(mainWindow->ui->pssmltRefraction->text());
-		if (refr == -1) refr = pssmltDefaults.refr;
-		if (refr < pssmltDefaults.minRefr) refr = pssmltDefaults.minRefr;
-		if (refr > pssmltDefaults.maxRefr) refr = pssmltDefaults.maxRefr;
-
 	}
 
 	if (selectedRenderer == "smallmedia") {
-
 		spp = getTextAsInt(mainWindow->ui->smallmediaSamples->text());
-		if (spp == -1) spp = smallmediaDefaults.spp;
-		if (spp < smallmediaDefaults.minSpp) spp = smallmediaDefaults.minSpp;
-
 		size = getTextAsInt(mainWindow->ui->smallmediaSize->text());
-		if (size == -1) size = smallmediaDefaults.size;
-		if (size < smallmediaDefaults.minSize) size = smallmediaDefaults.minSize;
-		if (size > smallmediaDefaults.maxSize) size = smallmediaDefaults.maxSize;
-
 		refr = getTextAsFloat(mainWindow->ui->smallmediaRefraction->text());
-		if (refr == -1) refr = smallmediaDefaults.refr;
-		if (refr < smallmediaDefaults.minRefr) refr = smallmediaDefaults.minRefr;
-		if (refr > smallmediaDefaults.maxRefr) refr = smallmediaDefaults.maxRefr;
-
 	}
 
 	if (selectedRenderer == "ppm") {
-
 		spp = getTextAsInt(mainWindow->ui->ppmSamples->text());
-		if (spp == -1) spp = ppmDefaults.spp;
-		if (spp < ppmDefaults.minSpp) spp = ppmDefaults.minSpp;
 		spp *= 1000;
-
 		size = getTextAsInt(mainWindow->ui->ppmSize->text());
-		if (size == -1) size = ppmDefaults.size;
-		if (size < ppmDefaults.minSize) size = ppmDefaults.minSize;
-		if (size > ppmDefaults.maxSize) size = ppmDefaults.maxSize;
-
 		refr = getTextAsFloat(mainWindow->ui->ppmRefraction->text());
-		if (refr == -1) refr = ppmDefaults.refr;
-		if (refr < ppmDefaults.minRefr) refr = ppmDefaults.minRefr;
-		if (refr > ppmDefaults.maxRefr) refr = ppmDefaults.maxRefr;
-
 	}
+
+    if (selectedRenderer == "vrl") {
+        spp = getTextAsInt(mainWindow->ui->vrlSamples->text());
+        vrlps = getTextAsInt(mainWindow->ui->vrlVRLPS->text());
+        size = getTextAsInt(mainWindow->ui->vrlSize->text());
+        bounces = getTextAsInt(mainWindow->ui->vrlBounces->text());
+        scene = mainWindow->ui->vrlScene->currentIndex();
+        sampling = mainWindow->ui->vrlSampling->currentIndex();
+        refr = getTextAsFloat(mainWindow->ui->vrlRefraction->text());
+        sigma_a = getTextAsFloat(mainWindow->ui->vrlSigmaA->text());
+        sigma_s = getTextAsFloat(mainWindow->ui->vrlSigmaS->text());
+        g = getTextAsFloat(mainWindow->ui->vrlG->text());
+        mediumRadiance = mainWindow->ui->vrlMediumRadiance->isChecked();
+        surfaceRadiance = mainWindow->ui->vrlSurfaceRadiance->isChecked();
+    }
+
+
+    if (spp == -1) spp = selectedRenderer == "ppm" ? 50000 : 50;
+    if (spp < 1) spp = 1;
+    info.spp = spp;
+
+    if (vrlps == -1) vrlps = 10;
+    if (vrlps < 1) vrlps = 1;
+    info.vrlps = vrlps;
+
+    if (size == -1) size = 512;
+    size = qMin(2048, qMax(256, size));
+    info.size = size;
+
+    if (bounces == -1) bounces = 1;
+    if (bounces < 1) bounces = 1;
+    info.bounces = bounces;
+
+    if (scene == -1) scene = 0;
+    if (scene < 0 || scene > 5) scene = 0;
+    info.scene = scene;
+
+    if (sampling == -1) sampling = 0;
+    if (sampling < 0 || sampling > 4) sampling = 0;
+    info.sampling = sampling;
+
+    if (refr == -1) refr = 1.5;
+    refr = qMin(5.0, qMax(1.0, refr));
+    info.refr = refr;
+
+    if (sigma_a == -1) sigma_a = 0.1;
+    sigma_a = qMin(100.0, qMax(0.0, sigma_a));
+    info.sigma_a = sigma_a;
+
+    if (sigma_s == -1) sigma_s = 0.01;
+    sigma_s = qMin(100.0, qMax(0.0, sigma_s));
+    info.sigma_s = sigma_s;
+
+    if (g == -1) g = 0.0;
+    g = qMin(1.0, qMax(-1.0, g));
+    info.g = g;
+
+    info.mediumRadiance = mediumRadiance;
+    info.surfaceRadiance = surfaceRadiance;
 }
 
 /**
  * Intitializes the render information and sets some start up values.
  */
-void HelperFunctions::initializeRenderInformation(QString selectedRenderer, int spp, int size, float refr) {
+void HelperFunctions::initializeRenderInformation(QString selectedRenderer, smallpaint::RenderInfo info) {
 	QString sppString;
 	mainWindow->ui->renderButton->setText("Cancel");
-	mainWindow->width = size;
-	mainWindow->height = size;
+    mainWindow->width = info.size;
+    mainWindow->height = info.size;
     //mainWindow->ui->renderedImage->clear();
 	mainWindow->lastImage = "";
     mainWindow->ui->progressBar->setMinimum(0);
-    mainWindow->ui->progressBar->setMaximum(spp);
-    sppString = QString::number(spp);
+    mainWindow->ui->progressBar->setMaximum(info.spp);
+    sppString = QString::number(info.spp);
 	mainWindow->ui->timeInfo->setText("Processing...");
 	if (selectedRenderer != "ppm") {
-		mainWindow->ui->renderInfo->setText("Rendering with smallpaint_" + selectedRenderer + ": " + QString::number(size) + "x"
-											+ QString::number(size) + " pixel, " + sppString + " samples, " + QString::number(refr) + " refraction index");
+        mainWindow->ui->renderInfo->setText("Rendering with smallpaint_" + selectedRenderer + ": " + QString::number(info.size) + "x"
+                                            + QString::number(info.size) + " pixel, " + sppString + " samples");
 	} else {
-		mainWindow->ui->renderInfo->setText("Rendering with smallpaint_" + selectedRenderer + ": " + QString::number(size) + "x"
-											+ QString::number(size) + " pixel, " + sppString + " photons, " + QString::number(refr) + " refraction index");
+        mainWindow->ui->renderInfo->setText("Rendering with smallpaint_" + selectedRenderer + ": " + QString::number(info.size) + "x"
+                                            + QString::number(info.size) + " pixel, " + sppString + " photons");
 	}
 }
 

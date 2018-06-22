@@ -33,7 +33,7 @@ public:
     {
         if (TestWindow->objectName().isEmpty())
             TestWindow->setObjectName(QStringLiteral("TestWindow"));
-        TestWindow->resize(800, 400);
+        TestWindow->resize(1024, 512);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
