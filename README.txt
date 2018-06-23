@@ -10,29 +10,29 @@ http://cg.tuwien.ac.at/courses/Rendering/
 This UI serves as an educational learning tool to see the progressions
 and experience the different renderes with different input.
 created by Michael Oppitz  - e1227129@student.tuwien.ac.at	
+
+Executables for Windows and Linux are provided in the folders "binary_win32"
+and "binary_linux". If changes were made to the source code, rebuilding the 
+solutions is necessary:
 				
 Building (Windows):
-	- If you didn't already: Download and install Qt 5.7 and don't forget to check MinGW during installation:
-				- Qt 5.7 (for MinGW) for Windows: http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-windows-x86-mingw530-5.7.0.exe.mirrorlist
-				- Add "%PATHTOQT%\Qt\Qt5.7.0\5.7\mingw53_32\bin" and "%PATHTOQT%\\Qt\Qt5.7.0\Tools\mingw530_32\bin" to the PATH variable.
-				- Add a new variable called QTDIR with the value "%PATHTOQT%\Qt\Qt5.7.0\5.7\mingw53_32".
-	- Start a shell and cd into the "binary_win32" folder.
-	- Remove everything that is there.
-	- Call the commands:
-				qmake.exe ..\src_gui\Smallpaint.pro -r -spec win32-g++
-				mingw32-make.exe -j4
-				move release/Smallpaint.exe
+	- If you didn't already: Download and install Qt (tested with Version 5.10):
+				- Qt: https://www.qt.io/download
+	- Delete everything from the "binary_win32" folder.
+	- Open the "Smallpaint.pro" file with the Qt Creator.
+	- Go to the Build Settings and edit the build configuration (i.e., set to Release)
+	- Change the build directory to the path of "binary_win32".
+	- Build the project.
 	- Remove everything, but the "Smallpaint.exe".
-	- Call the command: 
-				windeployqt.exe . 				(the dot is important)
+	- Open a console and call the command: 
+				%PATH_TO_QT_KIT%\windeployqt.exe . 				(the dot is important)
 	- If you are missing some dependencies look for them in the dependecy folder or online.
 
 Building (Linux):
-	- If you didn't already: Download and install Qt 5.7:
-				- Qt 5.7 for Linux: http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run.mirrorlist
+	- If you didn't already: Download and install Qt (tested with Version 5.10):
+				- Qt: https://www.qt.io/download
 	- Remove everything in the "binary_linux" folder and open a terminal there.
 	- Call the commands:
 				%PATHTOQT%/Qt5.7.0/5.7/gcc_64/bin/qmake ../src_gui
 				make -j4
-				./Smallpaint
-	- If you're missing some dependencies, run "ldd Smallpaint" (without the quotes) and see what it links to.
+	- If you're missing some dependencies, run "ldd %PROGRAM%" and see what it links to.
